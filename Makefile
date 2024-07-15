@@ -1,18 +1,28 @@
 CC = gcc
 
-CFLAGS = -Wall 
+CFLAGS = -Wall
 
 INC = -I./include
 
 LIB = -lws2_32
 
-SRC = $(wildcard src/*.c)
+OTHER_SRC = src/input.c
+SERVER_SRC = src/server.c
+CLIENT_SRC = src/client.c
 
-OBJ = $(SRC:.c=.o)
+OTHER_OBJ = $(OTHER_SRC:.c=.o)
+SERVER_OBJ = $(SERVER_SRC:.c=.o)
+CLIENT_OBJ = $(CLIENT_SRC:.c=.o)
 
-TARGET = app.exe
+SERVER_TARGET = server.exe
+CLIENT_TARGET = client.exe
 
-$(TARGET): $(OBJ)
+all: $(SERVER_TARGET) $(CLIENT_TARGET)
+
+$(SERVER_TARGET): $(SERVER_OBJ) $(OTHER_OBJ)
+	$(CC) $(CFLAGS) $^ $(LIB) -o $@
+
+$(CLIENT_TARGET): $(CLIENT_OBJ) $(OTHER_OBJ)
 	$(CC) $(CFLAGS) $^ $(LIB) -o $@
 
 src/%.o: src/%.c
